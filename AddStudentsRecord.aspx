@@ -11,6 +11,7 @@
                     <asp:DropDownList runat="server" class="form-control w-25" ID="courseSelection"  AutoPostBack="true" OnSelectedIndexChanged="courseSelection_SelectedIndexChanged">
                         <asp:ListItem Text="Select..." Value="0"></asp:ListItem>
                     </asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="selectedCourseValidator" ControlToValidate="courseSelection" runat="server" InitialValue="0" ErrorMessage="* Must select one" ForeColor="Red"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group row ">

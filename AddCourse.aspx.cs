@@ -16,6 +16,7 @@ namespace Lab_3
         {
             List<Course> addedCourses = null;
 
+            // Initialize session 
             if (Session["addedCourses"] == null) 
             {
                 addedCourses = new List<Course>();
@@ -33,8 +34,10 @@ namespace Lab_3
             BulletedList topMenu = (BulletedList)Master.FindControl("topMenu");
             if (!IsPostBack)
             {
+                // Add menu elements on page load
                 topMenu.Items.Add(new ListItem("Add Student Records"));
             }
+            // redirect user if button is clicked
             topMenu.Click += (s, a) => Response.Redirect("AddStudentsRecord.aspx");
 
             displayTable();
@@ -43,19 +46,24 @@ namespace Lab_3
 
         protected void submitCourseInfo_Click(object sender, EventArgs e)
         {
+            //Retrive course session
             List<Course> addedCourses = Session["addedCourses"] as List<Course>;
 
+            //Initialize variables
             string cNumber = courseNumber.Text;
             string cName = courseName.Text;
 
             
-
+            //Create course object
             Course course = new Course(cNumber, cName);
+            //Add course object into a session
             addedCourses.Add(course);
 
+            //clear users input
             courseNumber.Text = "";
             courseName.Text = "";
 
+            //display table of courses
             displayTable();
             
         }
@@ -68,6 +76,7 @@ namespace Lab_3
 
             if (addedCourses.Count == 0)
             {
+                //Display error row if list of courses is empty
                 TableRow errorRow = new TableRow();
                 TableCell errorCell = new TableCell();
                 errorCell.Text = "No Course Record Exist!";
@@ -81,6 +90,7 @@ namespace Lab_3
             {
                 if(tblCourses.Rows.Count > 1)
                 {
+                    // if users adds course into a list, error row will be removed
                     for(int i = tblCourses.Rows.Count -1; i>0; i--)
                     {
                         tblCourses.Rows.RemoveAt(i);
@@ -89,17 +99,20 @@ namespace Lab_3
                 
                 if (sort == "code")
                 {
+                    //Sorting by course code
                     CourseComparerByID courseComparerByID = new CourseComparerByID();
                     addedCourses.Sort(courseComparerByID);
                 }
                 else if (sort == "title")
                 {
+                    //Sorting by course title 
                     CourseComparerByName courseComparerByName = new CourseComparerByName();
                     addedCourses.Sort(courseComparerByName);
                 }
 
                 foreach(Course c in addedCourses)
                 {
+                    //Add all elements into a table
                     TableCell c1 = new TableCell();
                     c1.Text = string.Concat(c.CourseNumber);
 
